@@ -19,8 +19,9 @@ const star_params = {
     height: 30,
 }
 
-const removeStar = (x, y) => {
-
+const filterStars = (star) => {
+    new_stars = stars.filter(filter_star => filter_star.x !== star.x && filter_star.y !== star.y);
+    return new_stars;
 }
 
 const addStars = () => {
@@ -31,21 +32,25 @@ const addStars = () => {
 }
 
 
-const moveStars = () => {
+const moveStars = (second_stars) => {
     ctx.clearRect(0, 0 , canvas.width, canvas.height);
     ctx.fillStyle = 'white';
-    for (let m_star of stars) {
-        m_star.y += Math.floor(Math.random() * 3);
-        ctx.fillRect(m_star.x, m_star.y, star_params.width, star_params.height)
-    }
+    for (let star of second_stars) {
+        star.y += Math.floor(Math.random() * 3);
 
-    for (let r_star of stars) {
-        
+        if (star.y >= canvas.height + star_params.height) {
+            stars = filterStars(star);
+        }
+        else {
+            ctx.fillRect(star.x, star.y, star_params.width, star_params.height);
+        } 
+
     }
+    console.log(stars.length);
 }
 
 const game = () => {
-    setInterval(moveStars, 10)
+    setInterval(() => moveStars([...stars]), 10)
     setInterval(addStars, 500)
 }
 
