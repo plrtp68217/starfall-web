@@ -1,44 +1,40 @@
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
-let white_dot = {
-    x: 0,
-    y: 0,
-}
+let userX;
+let userY;
 
-let big_white_dot = {
-    x: 100,
-    y: 100,
+const square = 30;
+
+const styles = ['red', 'orange', 'green', 'white', 'purple', 'yellow']
+
+
+const buildSquare = (current_cquare, x, y) => {
+    let result_square = [];
+    let squareX = x - 10;
+    let squareY = y;
+    const iterations = current_cquare / 10;
+
+    for (let row = 1; row < iterations + 1; row++) {
+        for (let column = 1; column < iterations + 1; column++) {
+            squareX += 10;
+            const styleIndex = Math.floor(Math.random() * styles.length)
+            ctx.fillStyle = styles[styleIndex];
+            ctx.fillRect(squareX, squareY, 10, 10)
+        }
+        squareX = x - 10;
+        squareY += 10;
+    }
 }
 
 document.onmousemove = (event) => {
-    white_dot.x = event.offsetX;
-    white_dot.y = event.offsetY;
-
-    ctx.clearRect(0, 0 , canvas.width, canvas.height);
-
-    ctx.fillStyle = 'white';
-    ctx.fillRect(white_dot.x, white_dot.y, 20, 20)
-    ctx.fillRect(big_white_dot.x, big_white_dot.y, 100, 100);
-
-    if (white_dot.x <= big_white_dot.x + 100 && white_dot.y <= big_white_dot.y + 100) {
-        console.log('in');
-    }
-    else {
-        console.log('out');
-        
-    }
-  
+    userX= event.offsetX;
+    userY = event.offsetY;
 }
 
-
-const showDotsEffect = () => {
-    for (let i = 0; i < 50; i++) {
-
-    }
-}
-
-
+document.addEventListener('click', (event) => {
+    buildSquare(square, userX, userY)
+})
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
