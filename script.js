@@ -19,6 +19,10 @@ const star_params = {
     height: 30,
 }
 
+const removeStar = (x, y) => {
+
+}
+
 const addStars = () => {
     stars.push({
         x: Math.floor(Math.random() * canvas.width),
@@ -30,9 +34,13 @@ const addStars = () => {
 const moveStars = () => {
     ctx.clearRect(0, 0 , canvas.width, canvas.height);
     ctx.fillStyle = 'white';
-    for (let star of stars) {
-        star.y += Math.floor(Math.random() * 3);
-        ctx.fillRect(star.x, star.y, star_params.width, star_params.height)
+    for (let m_star of stars) {
+        m_star.y += Math.floor(Math.random() * 3);
+        ctx.fillRect(m_star.x, m_star.y, star_params.width, star_params.height)
+    }
+
+    for (let r_star of stars) {
+        
     }
 }
 
