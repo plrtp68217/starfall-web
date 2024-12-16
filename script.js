@@ -9,7 +9,27 @@ const resizeCanvas = () => {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-let stars = []
+canvas.addEventListener('click', (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    starsAfterClick(x, y);
+})
+
+canvas.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+    starsAfterClick(x, y);
+})
+
+const starsAfterClick = (x, y) => {
+    stars = stars.filter(filter_star => !(x <= filter_star.x + star_params.width &
+                                        x >= filter_star.x &
+                                        y <= filter_star.y + star_params.height &
+                                        y >= filter_star.y));
+}
+
+let stars = [];
 
 let userX;
 let userY;
@@ -28,7 +48,7 @@ const addStars = () => {
     stars.push({
         x: Math.floor(Math.random() * canvas.width),
         y: - star_params.height,
-    })
+    });
 }
 
 
@@ -46,12 +66,13 @@ const moveStars = (second_stars) => {
         } 
 
     }
-    console.log(stars.length);
 }
 
 const game = () => {
-    setInterval(() => moveStars([...stars]), 10)
-    setInterval(addStars, 500)
+    moveStars([...stars]);
+    requestAnimationFrame(game);
+
 }
 
-game()
+game();
+setInterval(addStars, 500);
