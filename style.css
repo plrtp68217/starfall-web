@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Убираем полосы прокрутки */
+  }
+  
+#canvas {
+  display: block;
+  width: 100vw; /* Ширина на всю ширину окна */
+  height: 100vh; /* Высота на всю высоту окна */
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+}
