@@ -3,7 +3,11 @@ import { buildSquare, animationSquare } from "./square_animation.js";
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
+let score_label = document.querySelector('.score')
+
+
 let stars = [];
+let score = 0;
 
 const star_parameter = 30;
 
@@ -35,9 +39,11 @@ const starsAfterClick = (x, y) => {
                                                      y >= filter_star.y);
     if (filtered_stars) {
         filtered_stars.map(filtered_star => {
-            const built_square = buildSquare(30, filtered_star.x, filtered_star.y)
-            stars = stars.filter(star => star.x !== filtered_star.x && star.y !== filtered_star.y)
-            requestAnimationFrame((time) => animationSquare(built_square, time, 200))
+            score += 10;
+            score_label.innerText = `Счет: ${score}`;
+            const built_square = buildSquare(30, filtered_star.x, filtered_star.y);
+            stars = stars.filter(star => star.x !== filtered_star.x && star.y !== filtered_star.y);
+            requestAnimationFrame((time) => animationSquare(built_square, time, 200));
         })
     }
 }
@@ -51,6 +57,7 @@ const addStars = () => {
     stars.push({
         x: Math.floor(Math.random() * canvas.width),
         y: - star_parameter,
+        speed: Math.floor(Math.random() * 3 + 3),
     });
 }
 
@@ -59,7 +66,7 @@ const moveStars = (second_stars) => {
     ctx.clearRect(0, 0 , canvas.width, canvas.height);
     ctx.fillStyle = 'white';
     for (let star of second_stars) {
-        star.y += Math.floor(Math.random() * 3);
+        star.y += star.speed;
 
         if (star.y >= canvas.height + star_parameter) {
             stars = deleteStar(star);

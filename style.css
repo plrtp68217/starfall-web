@@ -11,31 +11,36 @@ html, body {
   
 #canvas {
   display: block;
-  width: 100vw; /* Ширина на всю ширину окна */
-  height: 100vh; /* Высота на всю высоту окна */
+  width: 100vw;
+  height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
   background-color: black;
-  z-index: -1;
+  z-index: 1;
 }
 
-.container {
+.layout {
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  padding: 4px 6px;
+  background-color: rgba(51, 49, 49, 0.733);
   display: flex;
-  flex-direction: column;
-  height: 100vh;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: white;
+
 }
 
-.header {
-  height: 50px;
-  background-color: #423e3e;
-}
-
-.main {
-  flex: 1;
-}
-
-.footer {
+.gamebar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   height: 100px;
-  background-color: #423e3e;
+  background-color: rgba(51, 49, 49, 0.733);
+  z-index: 2;
 }
