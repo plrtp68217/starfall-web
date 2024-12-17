@@ -3,6 +3,10 @@ import { buildSquare, animationSquare } from "./square_animation.js";
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
+let stars = [];
+
+const star_parameter = 30;
+
 const resizeCanvas = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -25,35 +29,17 @@ canvas.addEventListener('touchstart', (event) => {
 })
 
 const starsAfterClick = (x, y) => {
-    let filtered_stars = stars.filter(filter_star => x <= filter_star.x + star_params.width &
+    let filtered_stars = stars.filter(filter_star => x <= filter_star.x + star_parameter &
                                                      x >= filter_star.x &
-                                                     y <= filter_star.y + star_params.height &
+                                                     y <= filter_star.y + star_parameter &
                                                      y >= filter_star.y);
     if (filtered_stars) {
-        console.log(filtered_stars);
-        
         filtered_stars.map(filtered_star => {
             const built_square = buildSquare(30, filtered_star.x, filtered_star.y)
             stars = stars.filter(star => star.x !== filtered_star.x && star.y !== filtered_star.y)
             requestAnimationFrame((time) => animationSquare(built_square, time, 200))
         })
     }
-
-
-    // stars = stars.filter(filter_star => !(x <= filter_star.x + star_params.width &
-    //                                     x >= filter_star.x &
-    //                                     y <= filter_star.y + star_params.height &
-    //                                     y >= filter_star.y));
-}
-
-let stars = [];
-
-let userX;
-let userY;
-
-const star_params = {
-    width: 30,
-    height: 30,
 }
 
 const deleteStar = (star) => {
@@ -64,7 +50,7 @@ const deleteStar = (star) => {
 const addStars = () => {
     stars.push({
         x: Math.floor(Math.random() * canvas.width),
-        y: - star_params.height,
+        y: - star_parameter,
     });
 }
 
@@ -75,11 +61,11 @@ const moveStars = (second_stars) => {
     for (let star of second_stars) {
         star.y += Math.floor(Math.random() * 3);
 
-        if (star.y >= canvas.height + star_params.height) {
+        if (star.y >= canvas.height + star_parameter) {
             stars = deleteStar(star);
         }
         else {
-            ctx.fillRect(star.x, star.y, star_params.width, star_params.height);
+            ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
         } 
 
     }

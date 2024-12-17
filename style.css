@@ -5,9 +5,8 @@
 }
 
 html, body {
-    margin: 0;
-    padding: 0;
     overflow: hidden; /* Убираем полосы прокрутки */
+    height: 100vh;
   }
   
 #canvas {
@@ -18,4 +17,25 @@ html, body {
   top: 0;
   left: 0;
   background-color: black;
+  z-index: -1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  height: 50px;
+  background-color: #423e3e;
+}
+
+.main {
+  flex: 1;
+}
+
+.footer {
+  height: 100px;
+  background-color: #423e3e;
 }

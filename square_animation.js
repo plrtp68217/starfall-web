@@ -1,8 +1,6 @@
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
-// const styles = ['red', 'orange', 'green', 'white', 'purple', 'yellow']
-const styles = ['white'];
 const directions = ['top',  'bottom', 'left', 'right'];
 
 let startTime = null;
@@ -21,8 +19,6 @@ export const buildSquare = (current_cquare, x, y) => {
     for (let row = 1; row < iterations + 1; row++) {
         for (let column = 1; column < iterations + 1; column++) {
             squareX += 10;
-            const styleIndex = getRandomIndex(styles)
-            ctx.fillStyle = styles[styleIndex];
             built_square.push({x: squareX, y: squareY});
         }
         squareX = x - 10;
