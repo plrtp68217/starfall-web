@@ -1,3 +1,4 @@
+import { dropStar } from "./falling_star.js";
 import { buildSquare, animationSquare } from "./square_animation.js";
 
 let canvas = document.querySelector('#canvas');
@@ -86,3 +87,5 @@ const game = () => {
 
 game();
 setInterval(addStars, 500);
+setInterval(() => requestAnimationFrame(() => dropStar(canvas.width, canvas.height)), 100);
+
