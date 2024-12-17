@@ -1,3 +1,5 @@
+import { buildSquare, animationSquare } from "./square_animation.js";
+
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
@@ -23,10 +25,25 @@ canvas.addEventListener('touchstart', (event) => {
 })
 
 const starsAfterClick = (x, y) => {
-    stars = stars.filter(filter_star => !(x <= filter_star.x + star_params.width &
-                                        x >= filter_star.x &
-                                        y <= filter_star.y + star_params.height &
-                                        y >= filter_star.y));
+    let filtered_stars = stars.filter(filter_star => x <= filter_star.x + star_params.width &
+                                                     x >= filter_star.x &
+                                                     y <= filter_star.y + star_params.height &
+                                                     y >= filter_star.y);
+    if (filtered_stars) {
+        console.log(filtered_stars);
+        
+        filtered_stars.map(filtered_star => {
+            const built_square = buildSquare(30, filtered_star.x, filtered_star.y)
+            stars = stars.filter(star => star.x !== filtered_star.x && star.y !== filtered_star.y)
+            requestAnimationFrame((time) => animationSquare(built_square, time, 200))
+        })
+    }
+
+
+    // stars = stars.filter(filter_star => !(x <= filter_star.x + star_params.width &
+    //                                     x >= filter_star.x &
+    //                                     y <= filter_star.y + star_params.height &
+    //                                     y >= filter_star.y));
 }
 
 let stars = [];
@@ -39,8 +56,8 @@ const star_params = {
     height: 30,
 }
 
-const filterStars = (star) => {
-    new_stars = stars.filter(filter_star => filter_star.x !== star.x && filter_star.y !== star.y);
+const deleteStar = (star) => {
+    let new_stars = stars.filter(filter_star => filter_star.x !== star.x && filter_star.y !== star.y);
     return new_stars;
 }
 
@@ -59,7 +76,7 @@ const moveStars = (second_stars) => {
         star.y += Math.floor(Math.random() * 3);
 
         if (star.y >= canvas.height + star_params.height) {
-            stars = filterStars(star);
+            stars = deleteStar(star);
         }
         else {
             ctx.fillRect(star.x, star.y, star_params.width, star_params.height);
