@@ -4,13 +4,35 @@ import { buildSquare, animationSquare } from "./square_animation.js";
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
-let score_label = document.querySelector('.score')
-
-
 let stars = [];
+const star_parameter = 30;
+
+const score_label = document.querySelector('.score');
 let score = 0;
 
-const star_parameter = 30;
+
+const lifes = document.querySelector('.lifes');
+let lifes_count = 4
+
+
+const addLifes = (count) => {
+    for (let i = 0; i < count; i++) {
+        const life = document.createElement('div');
+        life.classList.add('life');
+        lifes.appendChild(life);
+    }
+}
+
+addLifes(lifes_count)
+
+const removeLifes = (count) => {
+    for (let i = 0; i < count; i++) {
+        const life = document.querySelector('.life')
+        if (life) lifes.removeChild(life);
+        else console.log('life zero');
+        
+    }
+}
 
 const resizeCanvas = () => {
     canvas.width = window.innerWidth;
@@ -56,7 +78,7 @@ const deleteStar = (star) => {
 
 const addStars = () => {
     stars.push({
-        x: Math.floor(Math.random() * canvas.width),
+        x: Math.floor(Math.random() * (canvas.width - star_parameter)),
         y: - star_parameter,
         speed: Math.floor(Math.random() * 3 + 3),
     });
@@ -68,14 +90,15 @@ const moveStars = (second_stars) => {
     ctx.fillStyle = 'white';
     for (let star of second_stars) {
         star.y += star.speed;
-
+        
         if (star.y >= canvas.height + star_parameter) {
             stars = deleteStar(star);
+            removeLifes(1);
         }
         else {
             ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
         } 
-
+        
     }
 }
 
@@ -87,5 +110,5 @@ const game = () => {
 
 game();
 setInterval(addStars, 500);
-setInterval(() => requestAnimationFrame(() => dropStar(canvas.width, canvas.height)), 100);
+// setInterval(() => requestAnimationFrame(() => dropStar(canvas.width, canvas.height)), 100);
 

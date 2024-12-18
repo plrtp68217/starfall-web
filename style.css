@@ -44,3 +44,16 @@ html, body {
   background-color: rgba(51, 49, 49, 0.733);
   z-index: 2;
 }
+
+.lifes {
+  display: flex;
+}
+
+.life {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  margin-right: 5px;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
