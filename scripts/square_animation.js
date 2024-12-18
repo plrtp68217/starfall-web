@@ -1,3 +1,5 @@
+import { getRandomIndex } from "./randoms.js";
+
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
@@ -5,11 +7,6 @@ const directions = ['top',  'bottom', 'left', 'right'];
 
 let startTime = null;
 const colors = ['orange', 'yellow', 'white'];
-
-const getRandomIndex = (array) => {
-    return Math.floor(Math.random() * array.length);
-}
-
 
 export const buildSquare = (current_cquare, x, y) => {
     let built_square = [];

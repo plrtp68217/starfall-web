@@ -6,6 +6,7 @@ import { createNewGameButton,
          createContinueButton,
          createGameOverButton 
         } from "./button_creators.js";
+import { getRandomRange } from "./randoms.js";
 
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
@@ -112,18 +113,22 @@ const addStars = () => {
     stars.push({
         x: Math.floor(Math.random() * (canvas.width - star_parameter)),
         y: - star_parameter,
-        speed: Math.floor(Math.random() * 3 + 3),
+        speed: getRandomRange(0.2, 0.4),
     });
 }
 
+let lastTime = 0;
 
-const moveStars = (second_stars) => {
+const moveStars = (second_stars, time) => {
     ctx.clearRect(0, 0 , canvas.width, canvas.height);
     ctx.fillStyle = 'white';
 
+    const deltaTime = (time - lastTime);
+    lastTime = time;
+
     if (second_stars) {
         for (let star of second_stars) {
-            star.y += star.speed;
+            star.y += star.speed * deltaTime;
             
             if (star.y >= canvas.height + star_parameter) {
                 stars = deleteStar(star);
@@ -143,9 +148,9 @@ const moveStars = (second_stars) => {
 
 let gameProcess = false;
 
-const motionRendering = () => {
+const motionRendering = (time) => {
     if (gameProcess) {
-        moveStars([...stars]);
+        moveStars([...stars], time);
         requestAnimationFrame(motionRendering);
     } 
 }
