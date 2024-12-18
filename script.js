@@ -14,7 +14,6 @@ let score = 0;
 const lifes = document.querySelector('.lifes');
 let lifes_count = 4
 
-
 const addLifes = (count) => {
     for (let i = 0; i < count; i++) {
         const life = document.createElement('div');
@@ -30,7 +29,6 @@ const removeLifes = (count) => {
         const life = document.querySelector('.life')
         if (life) lifes.removeChild(life);
         else console.log('life zero');
-        
     }
 }
 
@@ -88,27 +86,63 @@ const addStars = () => {
 const moveStars = (second_stars) => {
     ctx.clearRect(0, 0 , canvas.width, canvas.height);
     ctx.fillStyle = 'white';
-    for (let star of second_stars) {
-        star.y += star.speed;
-        
-        if (star.y >= canvas.height + star_parameter) {
-            stars = deleteStar(star);
-            removeLifes(1);
+
+    if (second_stars) {
+        for (let star of second_stars) {
+            star.y += star.speed;
+            
+            if (star.y >= canvas.height + star_parameter) {
+                stars = deleteStar(star);
+                removeLifes(1);
+            }
+            else {
+                ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
+            } 
         }
-        else {
-            ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
-        } 
-        
     }
 }
 
-const game = () => {
-    moveStars([...stars]);
-    requestAnimationFrame(game);
+let gameProcess = false;
 
+const motionRendering = () => {
+    if (gameProcess) {
+        moveStars([...stars]);
+        requestAnimationFrame(motionRendering);
+    } 
 }
 
-game();
-setInterval(addStars, 500);
-// setInterval(() => requestAnimationFrame(() => dropStar(canvas.width, canvas.height)), 100);
+let intervalId;
 
+function startInterval() {
+    // Останавливаем предыдущий интервал, если он существует
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  
+    // Запускаем новый интервал
+    intervalId = setInterval(addStars, 500);
+  }
+
+function stopInterval() {
+  // Останавливаем интервал
+  clearInterval(intervalId);
+}
+
+const newGame = () => {
+    stars = [];
+    score = 0;
+    lifes = 4;
+    gameProcess = true;
+    motionRendering(); // движение звезд
+    startInterval() // добавление звезд с интревалом 500 ms
+}
+
+const pauseGame = () => {
+    gameProcess = false;
+    stopInterval()
+}
+
+const continueGame = () => {
+    gameProcess = false;
+    startInterval()
+}
