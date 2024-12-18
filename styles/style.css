@@ -28,7 +28,7 @@ html, body {
   height: 60px;
   position: fixed;
   padding: 4px 6px;
-  background-color: rgba(0, 0, 0, 0.336);
+  background-color: rgba(0, 0, 0, 0.432);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,10 +53,10 @@ html, body {
 
 .my_button {
   height: 50px;
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 32, 102, 0.788);
   color: white;
   font-family: "Open Sans", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
   padding: 2px 4px;
   border-top-right-radius: 50%;
   border-bottom-left-radius: 50%;

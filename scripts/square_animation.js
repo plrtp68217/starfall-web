@@ -4,6 +4,7 @@ let ctx = canvas.getContext('2d');
 const directions = ['top',  'bottom', 'left', 'right'];
 
 let startTime = null;
+const colors = ['orange', 'yellow', 'white'];
 
 const getRandomIndex = (array) => {
     return Math.floor(Math.random() * array.length);
@@ -53,6 +54,9 @@ export const animationSquare = (built_square, current_time, duration) => {
                     built_square[section].x += 10;
                     break;
             }
+            const color_index = getRandomIndex(colors);
+            const color = colors[color_index];
+            ctx.fillStyle = color;
             ctx.fillRect(built_square[section].x, built_square[section].y, 10, 10)
         }
         requestAnimationFrame((time) => animationSquare(built_square, time, 200))

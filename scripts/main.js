@@ -9,7 +9,7 @@ let ctx = canvas.getContext('2d');
 // ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
 
 let stars = [];
-const star_parameter = 30;
+const star_parameter = 50;
 
 const score_label = document.querySelector('.score');
 let score = 0;
@@ -22,6 +22,9 @@ const gameBar = document.querySelector('.gamebar');
 const newGameButton = createNewGameButton()
 
 gameBar.appendChild(newGameButton);
+
+const star_img = new Image();
+star_img.src = 'assets/images/star.png'; // Путь к вашему изображению
 
 
 //
@@ -111,7 +114,8 @@ const moveStars = (second_stars) => {
                 removeLifes(1);
             }
             else {
-                ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
+                // ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
+                ctx.drawImage(star_img, star.x, star.y, star_parameter, star_parameter);
             } 
         }
     }
