@@ -1,7 +1,11 @@
 import { dropStar } from "./falling_star.js";
 import { buildSquare, animationSquare } from "./square_animation.js";
 import { removeChilds } from "./utils.js";
-import { createNewGameButton, createPauseButton, createContinueButton } from "./button_creators.js";
+import { createNewGameButton,
+         createPauseButton,
+         createContinueButton,
+         createGameOverButton 
+        } from "./button_creators.js";
 
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
@@ -24,12 +28,21 @@ const newGameButton = createNewGameButton()
 gameBar.appendChild(newGameButton);
 
 const star_img = new Image();
-star_img.src = 'assets/images/star.png'; // Путь к вашему изображению
+star_img.src = 'assets/images/star.png'; 
 
+const gameOverModal = document.querySelector('.game_over_container'); // модальное окно конца игры
+const gameOverScore = document.querySelector('.game_over_score'); // блок набранных очков по концу игры
+const gameOverButtonContainer = document.querySelector('.game_over_button'); // блок в котором нах-ся кнопка выхода из модалки
+const gameOverButton = createGameOverButton(); // кнопка выхода из модалки
+gameOverButton.addEventListener('click', closeGameOverModal); // добавляем событие выхода из модалки
+
+function closeGameOverModal() {
+    gameOverModal.style.display = 'none'
+}
+
+gameOverButtonContainer.appendChild(gameOverButton);
 
 //
-
-
 
 const resizeCanvas = () => {
     canvas.width = window.innerWidth;
@@ -40,16 +53,20 @@ window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 canvas.addEventListener('click', (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-    starsAfterClick(x, y);
+    if (gameProcess) {
+        const x = event.clientX;
+        const y = event.clientY;
+        starsAfterClick(x, y);
+    }
 })
 
 canvas.addEventListener('touchstart', (event) => {
+    if (gameProcess) {
     const touch = event.touches[0];
     const x = touch.clientX;
     const y = touch.clientY;
     starsAfterClick(x, y);
+    }
 })
 
 const addLifes = (count) => {
@@ -67,7 +84,6 @@ const removeLifes = (count) => {
             lifes.removeChild(life);
             lifes_count -= 1;
         }
-        else console.log('life zero');
     }
 }
 
@@ -112,9 +128,13 @@ const moveStars = (second_stars) => {
             if (star.y >= canvas.height + star_parameter) {
                 stars = deleteStar(star);
                 removeLifes(1);
+
+                if (lifes_count === 0) {
+                    console.log('GAME OVER');
+                    gameOver()
+                }
             }
             else {
-                // ctx.fillRect(star.x, star.y, star_parameter, star_parameter);
                 ctx.drawImage(star_img, star.x, star.y, star_parameter, star_parameter);
             } 
         }
@@ -202,4 +222,19 @@ const continueGame = () => {
     startInterval();
 
     
+}
+
+const gameOver = () => {
+    gameProcess = false;
+    stopInterval();
+
+    removeChilds('.gamebar');
+
+    const newGameButton = createNewGameButton();
+    newGameButton.addEventListener('click', newGame);
+    gameBar.appendChild(newGameButton);
+
+    gameOverModal.style.display = 'flex';
+    gameOverScore.innerText = `Набрано очков: ${score}`;
+
 }

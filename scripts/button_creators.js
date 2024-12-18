@@ -9,7 +9,7 @@ export const createPauseButton = () => {
     const pauseButton = document.createElement('button');
     pauseButton.classList.add('my_button', 'pause');
     pauseButton.innerText = 'Пауза';
-    return pauseButton
+    return pauseButton;
 }
 
 export const createContinueButton = () => {
@@ -18,3 +18,10 @@ export const createContinueButton = () => {
     continueButton.innerText = 'Продолжить';
     return continueButton;
 }
+
+export const createGameOverButton = () => {
+    const gameOverButton = document.createElement('button');
+    gameOverButton.classList.add('my_button_over');
+    gameOverButton.innerText = 'Закрыть окно';
+    return gameOverButton;
+} 
