@@ -1,8 +1,15 @@
 import { dropStar } from "./falling_star.js";
 import { buildSquare, animationSquare } from "./square_animation.js";
+import { removeChilds } from "./utils.js";
+import { createNewGameButton, createPauseButton, createContinueButton } from "./button_creators.js";
 
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
+
+// ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
+
+const backgroundImage = new Image();
+backgroundImage.src = 'static/background.jpg'; // Путь к изображению
 
 let stars = [];
 const star_parameter = 30;
@@ -10,33 +17,25 @@ const star_parameter = 30;
 const score_label = document.querySelector('.score');
 let score = 0;
 
-
 const lifes = document.querySelector('.lifes');
 let lifes_count = 4
 
-const addLifes = (count) => {
-    for (let i = 0; i < count; i++) {
-        const life = document.createElement('div');
-        life.classList.add('life');
-        lifes.appendChild(life);
-    }
-}
+const gameBar = document.querySelector('.gamebar');
 
-addLifes(lifes_count)
+const newGameButton = createNewGameButton()
 
-const removeLifes = (count) => {
-    for (let i = 0; i < count; i++) {
-        const life = document.querySelector('.life')
-        if (life) lifes.removeChild(life);
-        else console.log('life zero');
-    }
-}
+gameBar.appendChild(newGameButton);
+
+
+//
+
+
 
 const resizeCanvas = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-  
+
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
@@ -52,6 +51,25 @@ canvas.addEventListener('touchstart', (event) => {
     const y = touch.clientY;
     starsAfterClick(x, y);
 })
+
+const addLifes = (count) => {
+    for (let i = 0; i < count; i++) {
+        const life = document.createElement('div');
+        life.classList.add('life');
+        lifes.appendChild(life);
+    }
+}
+
+const removeLifes = (count) => {
+    for (let i = 0; i < count; i++) {
+        const life = document.querySelector('.life')
+        if (life) {
+            lifes.removeChild(life);
+            lifes_count -= 1;
+        }
+        else console.log('life zero');
+    }
+}
 
 const starsAfterClick = (x, y) => {
     let filtered_stars = stars.filter(filter_star => x <= filter_star.x + star_parameter &
@@ -113,36 +131,74 @@ const motionRendering = () => {
 
 let intervalId;
 
-function startInterval() {
-    // Останавливаем предыдущий интервал, если он существует
+const startInterval = () => {
     if (intervalId) {
       clearInterval(intervalId);
     }
-  
-    // Запускаем новый интервал
     intervalId = setInterval(addStars, 500);
   }
 
-function stopInterval() {
-  // Останавливаем интервал
-  clearInterval(intervalId);
+const stopInterval = () => {
+    clearInterval(intervalId);
 }
 
 const newGame = () => {
+    removeLifes(lifes_count);
+    
     stars = [];
     score = 0;
-    lifes = 4;
+    lifes_count = 4;
     gameProcess = true;
-    motionRendering(); // движение звезд
-    startInterval() // добавление звезд с интревалом 500 ms
+    score_label.innerText = `Счет: ${score}`;
+    
+    removeChilds('.gamebar', '#new');
+
+    const pauseButton = createPauseButton();
+    pauseButton.addEventListener('click', pauseGame);
+    gameBar.appendChild(pauseButton);
+    
+
+    addLifes(lifes_count);
+    motionRendering(); // отрисовка движения звезд
+    startInterval(); // добавление звезд с интревалом 500 ms
 }
 
+newGameButton.addEventListener('click', newGame);
+
 const pauseGame = () => {
+    const pauseButton = document.querySelector('.pause');
+    gameBar.removeChild(pauseButton);
+
+    const newGameButton = createNewGameButton();
+    newGameButton.addEventListener('click', newGame);
+
+    gameBar.appendChild(newGameButton);
+
+    const continueButton = createContinueButton();
+    continueButton.addEventListener('click', continueGame);
+    
+    gameBar.appendChild(continueButton);
+
     gameProcess = false;
-    stopInterval()
+    stopInterval();
+
 }
 
 const continueGame = () => {
-    gameProcess = false;
-    startInterval()
+    const newGameButton = document.querySelector('.new');
+    gameBar.removeChild(newGameButton);
+
+    const continueButton = document.querySelector('.continue');
+    gameBar.removeChild(continueButton);
+    
+    const pauseButton = createPauseButton();
+    pauseButton.addEventListener('click', pauseGame);
+    
+    gameBar.appendChild(pauseButton);
+
+    gameProcess = true;
+    motionRendering();
+    startInterval();
+
+    
 }
