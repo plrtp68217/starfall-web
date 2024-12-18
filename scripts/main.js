@@ -8,9 +8,6 @@ let ctx = canvas.getContext('2d');
 
 // ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
 
-const backgroundImage = new Image();
-backgroundImage.src = 'static/background.jpg'; // Путь к изображению
-
 let stars = [];
 const star_parameter = 30;
 
