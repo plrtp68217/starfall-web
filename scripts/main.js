@@ -151,11 +151,9 @@ function drawStars(second_stars)  {
 let gameProcess = false;
 
 const motionRendering = (time) => {
-    // if (gameProcess) {
         moveStars([...stars], time);
         drawStars([...stars])
         requestAnimationFrame(motionRendering);
-    // } 
 }
 
 let intervalId;
