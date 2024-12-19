@@ -15,5 +15,5 @@
    git clone https://github.com/ваш-логин/падают-звезды.git
 2. Перейдите в директорию проекта:
    ```bash
-   cd starfall-game
+   cd starfall-web
 3. Откройте файл index.html в любом современном браузере.
