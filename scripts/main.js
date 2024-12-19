@@ -127,31 +127,35 @@ const moveStars = (second_stars, time) => {
 
     if (second_stars) {
         for (let star of second_stars) {
+            if (!gameProcess) continue
             star.y += star.speed * deltaTime;
-            
-            if (star.y >= canvas.height + star_parameter) {
-                stars = deleteStar(star);
-                removeLifes(1);
-
-                if (lifes_count === 0) {
-                    console.log('GAME OVER');
-                    gameOver()
-                }
-            }
-            else {
-                ctx.drawImage(star_img, star.x, star.y, star_parameter, star_parameter);
-            } 
         }
+    }
+}
+
+function drawStars(second_stars)  {
+    for (let star of second_stars) {
+        if (star.y >= canvas.height + star_parameter) {
+            stars = deleteStar(star);
+            removeLifes(1);
+            if (lifes_count === 0) {
+                gameOver()
+            }
+        }
+        else {
+            ctx.drawImage(star_img, star.x, star.y, star_parameter, star_parameter);
+        } 
     }
 }
 
 let gameProcess = false;
 
 const motionRendering = (time) => {
-    if (gameProcess) {
+    // if (gameProcess) {
         moveStars([...stars], time);
+        drawStars([...stars])
         requestAnimationFrame(motionRendering);
-    } 
+    // } 
 }
 
 let intervalId;
@@ -184,7 +188,7 @@ const newGame = () => {
     
 
     addLifes(lifes_count);
-    motionRendering(); // отрисовка движения звезд
+    motionRendering(0); // отрисовка движения звезд
     startInterval(); // добавление звезд с интревалом 500 ms
 }
 
@@ -204,6 +208,7 @@ const pauseGame = () => {
     
     gameBar.appendChild(continueButton);
 
+    lastTime = 0;
     gameProcess = false;
     stopInterval();
 
@@ -222,10 +227,8 @@ const continueGame = () => {
     gameBar.appendChild(pauseButton);
 
     gameProcess = true;
-    motionRendering();
+    motionRendering(0);
     startInterval();
-
-    
 }
 
 const gameOver = () => {
