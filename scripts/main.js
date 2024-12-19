@@ -1,4 +1,3 @@
-import { dropStar } from "./falling_star.js";
 import { buildSquare, animationSquare } from "./square_animation.js";
 import { removeChilds } from "./utils.js";
 import { createNewGameButton,
