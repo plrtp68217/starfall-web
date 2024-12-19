@@ -1,9 +1,3 @@
-FROM node:23.4-alpine3.21
+FROM nginx:alpine
 
-WORKDIR /usr/src/web
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "scripts/main.js"]
+COPY . /usr/share/nginx/html
